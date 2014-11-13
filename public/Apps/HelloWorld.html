@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+     <script src="../javascripts/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../stylesheets/main.css">
+  <script src="../Build/Cesium/Cesium.js"></script>
+
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body ng-app="cesium">
+    <div ng-controller="cesiumCtrl" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-lg-push-6">
+                <div class="row">
+                    <p>
+                    <ul class="list-inline">
+                        <li><button type="button" class="btn btn-info" ng-click="openWebSocket()" >START Web Socket</button></li>
+                        <li><button type="button" class="btn btn-info" ng-click="endWebSocket()">END Web Socket</button></li>
+                    </ul>
+                    </p>
+                </div>
+                <div class="row">
+                    <div id="cesiumContainer"></div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12  col-lg-pull-6">
+                <div class="row"><p>
+                    <div class="col-lg-4 col-md-6  col-pull-1">
+
+                        <select class="form-control" ng-model="myPlane" ng-change="mark()">
+                            <option value="">-- choose plane --</option>
+                            <option value="{{plane.id}}" ng-repeat="plane in planes">{{plane.id}}</option>
+                        </select>
+
+                    </div></p>
+                </div>
+                <div class="row">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Color</th>
+                            <th>Longitude</th>
+                            <th>Latitude</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="{{plane.id}}" ng-repeat="plane in planes track by plane.id">
+                            <td>{{$index+1}}</td>
+                            <td>{{plane.colorId}}</td>
+                            <td>{{plane.longitude}}</td>
+                            <td>{{plane.latitude}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  <script src="../javascripts/socketModule.js"></script>
+    <script src="../javascripts/mapModule.js"></script>
+    <script src="../javascripts/controllers.js"></script>
+</body>
+</html>

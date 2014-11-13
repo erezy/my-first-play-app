@@ -1,0 +1,49 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/hello.js")" type="text/javascript"></script>
+    </head>
+    <body>
+        <button onclick="openWebSocket()">Start Web Socket</button> <button onclick="closeWebSocket()">Close Web Socket</button>
+        <p><input type="text" id="message"/><button onclick="send()">Send</button></p>
+        <div id="output"></div>
+    </body>
+    <script language="javascript" type="text/javascript">
+    var wsUri = "ws://localhost:9000/socket";
+    var output;
+    function openWebSocket() {
+        output = document.getElementById("output");
+        websocket = new WebSocket(wsUri);
+        websocket.onopen = function(evt) { onOpen(evt) };
+         websocket.onmessage = function(evt) { onMessage(evt) };
+        websocket.onerror = function(evt) { onMessage(evt) };
+    }
+    function send(){
+        msg = document.getElementById("message").value;
+       // obj = JSON.parse(msg);
+        websocket.send(JSON.stringify({id: msg}));
+    }
+    function onMessage(evt) {
+        console.log(evt.data);
+        var pre = document.createElement("p")
+        pre.innerHTML = evt.data;
+        output.appendChild(pre)
+    }
+     function onOpen(evt) {
+        var pre = document.createElement("p")
+        pre.innerHTML = "CONNECTED";
+        output.appendChild(pre)
+    }
+    function closeWebSocket(){
+        websocket.close();
+    }
+
+    </script>
+</html>
+
